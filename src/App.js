@@ -10,8 +10,7 @@ import { createTodo } from "./graphql/mutations";
 import { Container, Table, Form, Button, Row, Col, Navbar, Nav } from 'react-bootstrap';
 import { signOut } from 'aws-amplify/auth';
 import { FaSignOutAlt, FaBars, FaHome, FaCog, FaExchangeAlt, FaMoneyCheckAlt, FaDatabase, FaChartBar } from 'react-icons/fa';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+
 
 Amplify.configure(awsconfig);
 const client = generateClient();
@@ -211,7 +210,7 @@ const TodoList = ({ todos }) => (
 
 export default withAuthenticator(App, {
     theme: {
-        backgroundColor: '#FFA500', // Orange background
+        backgroundColor: '#FFA500', // Orange backgroundd
         textColor: '#000000', // Black text
         primaryColor: '#FFA500', // Orange buttons
         buttonTextColor: '#ffffff', // White text on buttons
