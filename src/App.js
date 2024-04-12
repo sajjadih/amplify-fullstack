@@ -1,25 +1,189 @@
-//import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import {
-  withAuthenticator,
-  Button,
-  Heading,
-  Image,
-  View,
-  Card,
-} from '@aws-amplify/ui-react';
+import { Amplify } from 'aws-amplify';
+import awsconfig from './aws-exports';
+import { generateClient } from "aws-amplify/api";
+import { listTodos } from "./graphql/queries";
+import { createTodo } from "./graphql/mutations";
+import { Container, Table, Form, Button, Row, Col, Navbar, Nav } from 'react-bootstrap';
+import { signOut } from 'aws-amplify/auth';
+import { FaSignOutAlt, FaBars, FaHome, FaCog, FaExchangeAlt, FaMoneyCheckAlt, FaDatabase, FaChartBar } from 'react-icons/fa';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-function App({ signOut }) {
-  return (
-      <View className="App">
-        <Card>
-          <Image src={logo} className="App-logo" alt="logo" />
-          <Heading level={1}>We now have Auth!!</Heading>
-        </Card>
-        <Button onClick={signOut}>Sign Out</Button>
-      </View>
-  );
+Amplify.configure(awsconfig);
+const client = generateClient();
+
+function App() {
+    const [todos, setTodos] = useState([]);
+    const [newTodoName, setNewTodoName] = useState('');
+    const [newTodoDescription, setNewTodoDescription] = useState('');
+    const [sidebarVisible, setSidebarVisible] = useState(false);
+
+    const fetchTodos = async () => {
+        try {
+            const { data } = await client.graphql({ query: listTodos });
+            setTodos(data.listTodos.items);
+        } catch (err) {
+            console.error('Error fetching todos:', err);
+        }
+    };
+
+    const handleCreateTodo = async (event) => {
+        event.preventDefault();
+        if (!newTodoName.trim() || !newTodoDescription.trim()) return;
+        try {
+            const newTodo = await client.graphql({
+                query: createTodo,
+                variables: { input: { name: newTodoName, description: newTodoDescription } }
+            });
+            fetchTodos();
+            setNewTodoName('');
+            setNewTodoDescription('');
+        } catch (err) {
+            console.error('Error creating new todo:', err);
+        }
+    };
+
+    useEffect(() => {
+        fetchTodos();
+    }, []);
+
+    async function handleSignOut() {
+        try {
+            await signOut({ global: true });
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+    }
+
+    const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
+
+    return (
+        <Router>
+            <div className="d-flex" id="wrapper">
+                <Sidebar isVisible={sidebarVisible} toggleSidebar={toggleSidebar} />
+                <div id="page-content-wrapper" style={{ width: '100%', marginLeft: sidebarVisible ? '250px' : '0px' }}>
+                    <Button className="m-2" onClick={toggleSidebar}><FaBars /></Button>
+                    <Routes>
+                        <Route path="/" element={<MainPage todos={todos} handleCreateTodo={handleCreateTodo} newTodoName={newTodoName} setNewTodoName={setNewTodoName} newTodoDescription={newTodoDescription} setNewTodoDescription={setNewTodoDescription} handleSignOut={handleSignOut} />} />
+                        <Route path="/next-page" element={<NextPage />} />
+                    </Routes>
+                </div>
+            </div>
+        </Router>
+    );
 }
+
+const Sidebar = ({ isVisible, toggleSidebar }) => (
+    <div className={`bg-dark ${isVisible ? 'visible' : 'invisible'}`} id="sidebar-wrapper" style={{ width: "250px", height: "100vh", position: 'fixed' }}>
+        <Button onClick={toggleSidebar} className="btn btn-secondary m-2">Toggle</Button>
+        <div className="sidebar-heading text-light">Menu</div>
+        <div className="list-group list-group-flush">
+            <Link to="/" className="list-group-item list-group-item-action bg-dark text-light">
+                <FaHome className="mr-3" /> Home
+            </Link>
+            <Link to="/base-configuration" className="list-group-item list-group-item-action bg-dark text-light">
+                <FaCog className="mr-3" /> Base Configuration
+            </Link>
+            <Link to="/transactions" className="list-group-item list-group-item-action bg-dark text-light">
+                <FaExchangeAlt className="mr-3" /> Transactions
+            </Link>
+            <Link to="/accounting-postings" className="list-group-item list-group-item-action bg-dark text-light">
+                <FaMoneyCheckAlt className="mr-3" /> Accounting & Postings
+            </Link>
+            <Link to="/master-data-management" className="list-group-item list-group-item-action bg-dark text-light">
+                <FaDatabase className="mr-3" /> Master Data Management
+            </Link>
+            <Link to="/reports" className="list-group-item list-group-item-action bg-dark text-light">
+                <FaChartBar className="mr-3" /> Reports
+            </Link>
+        </div>
+    </div>
+);
+
+const MainPage = ({ todos, handleCreateTodo, newTodoName, setNewTodoName, newTodoDescription, setNewTodoDescription, handleSignOut }) => (
+    <Container fluid>
+        <Navbar bg="light" expand="lg">
+            <Navbar.Brand>Todo App</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="ml-auto">
+                    <Button variant="outline-primary" onClick={handleSignOut}>
+                        <FaSignOutAlt /> Sign Out
+                    </Button>
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
+        <TodoForm handleCreateTodo={handleCreateTodo} newTodoName={newTodoName} setNewTodoName={setNewTodoName} newTodoDescription={newTodoDescription} setNewTodoDescription={setNewTodoDescription} />
+        <h2 className="mt-3">Todo List</h2>
+        <TodoList todos={todos} />
+        <Link to="/next-page">
+            <Button variant="primary" className="mt-3">Next Page</Button>
+        </Link>
+    </Container>
+);
+
+const NextPage = () => (
+    <Container fluid>
+        <Navbar bg="light" expand="lg">
+            <Navbar.Brand>Next Page</Navbar.Brand>
+        </Navbar>
+        <Link to="/">Back</Link>
+    </Container>
+);
+
+const TodoForm = ({ handleCreateTodo, newTodoName, setNewTodoName, newTodoDescription, setNewTodoDescription }) => (
+    <Form onSubmit={handleCreateTodo}>
+        <Row>
+            <Col md={6}>
+                <Form.Group controlId="formTodoName">
+                    <Form.Label>Todo Name</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder="Enter name"
+                        value={newTodoName}
+                        onChange={(e) => setNewTodoName(e.target.value)}
+                        required
+                    />
+                </Form.Group>
+            </Col>
+            <Col md={6}>
+                <Form.Group controlId="formTodoDescription">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder="Enter description"
+                        value={newTodoDescription}
+                        onChange={(e) => setNewTodoDescription(e.target.value)}
+                        required
+                    />
+                </Form.Group>
+            </Col>
+        </Row>
+        <Button variant="success" type="submit" className="mt-2">Create Todo</Button>
+    </Form>
+);
+
+const TodoList = ({ todos }) => (
+    <Table striped bordered hover>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {todos.map((todo, index) => (
+            <tr key={index}>
+                <td>{todo.name}</td>
+                <td>{todo.description}</td>
+            </tr>
+        ))}
+        </tbody>
+    </Table>
+);
 
 export default withAuthenticator(App);
