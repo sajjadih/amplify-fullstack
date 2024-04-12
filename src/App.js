@@ -64,7 +64,7 @@ function App() {
     return (
         <Router>
             <div className="d-flex" id="wrapper">
-                <Sidebar isVisible={sidebarVisible} toggleSidebar={toggleSidebar} />
+                <Sidebar isVisible={sidebarVisible} toggleSidebar={toggleSidebar} handleSignOut={handleSignOut} />
                 <div id="page-content-wrapper" style={{ width: '100%', marginLeft: sidebarVisible ? '250px' : '0px' }}>
                     <Button className="m-2" onClick={toggleSidebar}><FaBars /></Button>
                     <Routes>
@@ -77,32 +77,55 @@ function App() {
     );
 }
 
-const Sidebar = ({ isVisible, toggleSidebar }) => (
+const Sidebar = ({ isVisible, toggleSidebar, handleSignOut }) => (
     <div className={`bg-dark ${isVisible ? 'visible' : 'invisible'}`} id="sidebar-wrapper" style={{ width: "250px", height: "100vh", position: 'fixed' }}>
         <Button onClick={toggleSidebar} className="btn btn-secondary m-2">Toggle</Button>
         <div className="sidebar-heading text-light">Menu</div>
         <div className="list-group list-group-flush">
-            <Link to="/" className="list-group-item list-group-item-action bg-dark text-light">
+            <CustomLink to="/" className="list-group-item list-group-item-action bg-dark text-light">
                 <FaHome className="mr-3" /> Home
-            </Link>
-            <Link to="/base-configuration" className="list-group-item list-group-item-action bg-dark text-light">
+            </CustomLink>
+            <CustomLink to="/base-configuration" className="list-group-item list-group-item-action bg-dark text-light">
                 <FaCog className="mr-3" /> Base Configuration
-            </Link>
-            <Link to="/transactions" className="list-group-item list-group-item-action bg-dark text-light">
+            </CustomLink>
+            <CustomLink to="/transactions" className="list-group-item list-group-item-action bg-dark text-light">
                 <FaExchangeAlt className="mr-3" /> Transactions
-            </Link>
-            <Link to="/accounting-postings" className="list-group-item list-group-item-action bg-dark text-light">
+            </CustomLink>
+            <CustomLink to="/accounting-postings" className="list-group-item list-group-item-action bg-dark text-light">
                 <FaMoneyCheckAlt className="mr-3" /> Accounting & Postings
-            </Link>
-            <Link to="/master-data-management" className="list-group-item list-group-item-action bg-dark text-light">
+            </CustomLink>
+            <CustomLink to="/master-data-management" className="list-group-item list-group-item-action bg-dark text-light">
                 <FaDatabase className="mr-3" /> Master Data Management
-            </Link>
-            <Link to="/reports" className="list-group-item list-group-item-action bg-dark text-light">
+            </CustomLink>
+            <CustomLink to="/reports" className="list-group-item list-group-item-action bg-dark text-light">
                 <FaChartBar className="mr-3" /> Reports
-            </Link>
+            </CustomLink>
+            <CustomLink to="/" className="list-group-item list-group-item-action bg-dark text-light" onClick={handleSignOut}>
+                <FaSignOutAlt className="mr-3" /> Sign Out
+            </CustomLink>
         </div>
     </div>
 );
+
+const CustomLink = ({ to, children, ...rest }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <Link
+            to={to}
+            {...rest}
+            style={{
+                color: isHovered ? 'orange' : 'inherit',
+                textDecoration: 'none',
+                transition: 'color 0.3s',
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {children}
+        </Link>
+    );
+};
 
 const MainPage = ({ todos, handleCreateTodo, newTodoName, setNewTodoName, newTodoDescription, setNewTodoDescription, handleSignOut }) => (
     <Container fluid>
@@ -186,4 +209,12 @@ const TodoList = ({ todos }) => (
     </Table>
 );
 
-export default withAuthenticator(App);
+export default withAuthenticator(App, {
+    theme: {
+        backgroundColor: '#FFA500', // Orange background
+        textColor: '#000000', // Black text
+        primaryColor: '#FFA500', // Orange buttons
+        buttonTextColor: '#ffffff', // White text on buttons
+        secondaryColor: '#000000' // Black secondary color
+    }
+});
