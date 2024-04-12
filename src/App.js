@@ -5,12 +5,13 @@ import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import { generateClient } from "aws-amplify/api";
-import { listTodos } from "./graphql/queries";
-import { createTodo } from "./graphql/mutations";
+import { listTodos } from './graphql/queries';
+import { createTodo, deleteTodo } from './graphql/mutations'; // Importing createTodo and deleteTodo mutations
 import { Container, Table, Form, Button, Row, Col, Navbar, Nav } from 'react-bootstrap';
 import { signOut } from 'aws-amplify/auth';
-import { FaSignOutAlt, FaBars, FaHome, FaCog, FaExchangeAlt, FaMoneyCheckAlt, FaDatabase, FaChartBar } from 'react-icons/fa';
-
+import { FaSignOutAlt, FaBars, FaHome, FaCog, FaExchangeAlt, FaMoneyCheckAlt, FaDatabase, FaChartBar, FaTrash } from 'react-icons/fa';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 Amplify.configure(awsconfig);
 const client = generateClient();
@@ -34,7 +35,7 @@ function App() {
         event.preventDefault();
         if (!newTodoName.trim() || !newTodoDescription.trim()) return;
         try {
-            const newTodo = await client.graphql({
+            await client.graphql({
                 query: createTodo,
                 variables: { input: { name: newTodoName, description: newTodoDescription } }
             });
@@ -43,6 +44,18 @@ function App() {
             setNewTodoDescription('');
         } catch (err) {
             console.error('Error creating new todo:', err);
+        }
+    };
+
+    const handleDeleteTodo = async (id) => {
+        try {
+            await client.graphql({
+                query: deleteTodo,
+                variables: { input: { id } }
+            });
+            fetchTodos();
+        } catch (err) {
+            console.error('Error deleting todo:', err);
         }
     };
 
@@ -67,7 +80,7 @@ function App() {
                 <div id="page-content-wrapper" style={{ width: '100%', marginLeft: sidebarVisible ? '250px' : '0px' }}>
                     <Button className="m-2" onClick={toggleSidebar}><FaBars /></Button>
                     <Routes>
-                        <Route path="/" element={<MainPage todos={todos} handleCreateTodo={handleCreateTodo} newTodoName={newTodoName} setNewTodoName={setNewTodoName} newTodoDescription={newTodoDescription} setNewTodoDescription={setNewTodoDescription} handleSignOut={handleSignOut} />} />
+                        <Route path="/" element={<MainPage todos={todos} handleCreateTodo={handleCreateTodo} newTodoName={newTodoName} setNewTodoName={setNewTodoName} newTodoDescription={newTodoDescription} setNewTodoDescription={setNewTodoDescription} handleSignOut={handleSignOut} handleDeleteTodo={handleDeleteTodo} />} />
                         <Route path="/next-page" element={<NextPage />} />
                     </Routes>
                 </div>
@@ -126,7 +139,7 @@ const CustomLink = ({ to, children, ...rest }) => {
     );
 };
 
-const MainPage = ({ todos, handleCreateTodo, newTodoName, setNewTodoName, newTodoDescription, setNewTodoDescription, handleSignOut }) => (
+const MainPage = ({ todos, handleCreateTodo, newTodoName, setNewTodoName, newTodoDescription, setNewTodoDescription, handleSignOut, handleDeleteTodo }) => (
     <Container fluid>
         <Navbar bg="light" expand="lg">
             <Navbar.Brand>Todo App</Navbar.Brand>
@@ -141,7 +154,7 @@ const MainPage = ({ todos, handleCreateTodo, newTodoName, setNewTodoName, newTod
         </Navbar>
         <TodoForm handleCreateTodo={handleCreateTodo} newTodoName={newTodoName} setNewTodoName={setNewTodoName} newTodoDescription={newTodoDescription} setNewTodoDescription={setNewTodoDescription} />
         <h2 className="mt-3">Todo List</h2>
-        <TodoList todos={todos} />
+        <TodoList todos={todos} handleDeleteTodo={handleDeleteTodo} />
         <Link to="/next-page">
             <Button variant="primary" className="mt-3">Next Page</Button>
         </Link>
@@ -189,12 +202,13 @@ const TodoForm = ({ handleCreateTodo, newTodoName, setNewTodoName, newTodoDescri
     </Form>
 );
 
-const TodoList = ({ todos }) => (
+const TodoList = ({ todos, handleDeleteTodo }) => (
     <Table striped bordered hover>
         <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -202,6 +216,9 @@ const TodoList = ({ todos }) => (
             <tr key={index}>
                 <td>{todo.name}</td>
                 <td>{todo.description}</td>
+                <td>
+                    <Button variant="danger" onClick={() => handleDeleteTodo(todo.id)}><FaTrash /></Button>
+                </td>
             </tr>
         ))}
         </tbody>
@@ -210,10 +227,10 @@ const TodoList = ({ todos }) => (
 
 export default withAuthenticator(App, {
     theme: {
-        backgroundColor: '#FFA500', // Orange backgroundd
-        textColor: '#000000', // Black text
-        primaryColor: '#FFA500', // Orange buttons
-        buttonTextColor: '#ffffff', // White text on buttons
-        secondaryColor: '#000000' // Black secondary color
+        backgroundColor: '#FFA500',
+        textColor: '#000000',
+        primaryColor: '#FFA500',
+        buttonTextColor: '#ffffff',
+        secondaryColor: '#000000'
     }
 });
