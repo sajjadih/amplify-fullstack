@@ -16,5 +16,18 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolId": "string",
       "UserPoolName": "string"
     }
+  },
+  "interactions": {
+    "FullStackApplication": {
+      "BotName": "string",
+      "FunctionArn": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "s3amplifyfullstackstorage": {
+      "BucketName": "string",
+      "Region": "string"
+    }
   }
 }

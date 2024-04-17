@@ -47,5 +47,37 @@
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
     }
+  },
+  "interactions": {
+    "FullStackApplication": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lex"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_interactions_FullStackApplication_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "interactions",
+          "resourceName": "FullStackApplication"
+        }
+      ]
+    },
+    "AMPLIFY_interactions_FullStackApplication_s3Key": {
+      "usedBy": [
+        {
+          "category": "interactions",
+          "resourceName": "FullStackApplication"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "s3amplifyfullstackstorage": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
   }
 }

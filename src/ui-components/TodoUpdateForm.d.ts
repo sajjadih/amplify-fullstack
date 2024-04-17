@@ -24,16 +24,34 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type TodoUpdateFormInputValues = {
     name?: string;
     description?: string;
+    interest_rate?: number;
+    inflation_rate?: number;
+    current_value?: number;
+    future_value?: number;
+    present_value?: number;
+    currency?: string;
 };
 export declare type TodoUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    interest_rate?: ValidationFunction<number>;
+    inflation_rate?: ValidationFunction<number>;
+    current_value?: ValidationFunction<number>;
+    future_value?: ValidationFunction<number>;
+    present_value?: ValidationFunction<number>;
+    currency?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TodoUpdateFormOverridesProps = {
     TodoUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    interest_rate?: PrimitiveOverrideProps<TextFieldProps>;
+    inflation_rate?: PrimitiveOverrideProps<TextFieldProps>;
+    current_value?: PrimitiveOverrideProps<TextFieldProps>;
+    future_value?: PrimitiveOverrideProps<TextFieldProps>;
+    present_value?: PrimitiveOverrideProps<TextFieldProps>;
+    currency?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TodoUpdateFormProps = React.PropsWithChildren<{
     overrides?: TodoUpdateFormOverridesProps | undefined | null;

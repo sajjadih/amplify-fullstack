@@ -23,11 +23,11 @@
             }
           ],
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 30,
               "description": "api key description"
-            }
+            },
+            "authenticationType": "API_KEY"
           }
         },
         "GraphQLAPIIdOutput": "ogsjldke3jbxvgdfu2x5ghwaaq",
@@ -36,12 +36,11 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-04-12T03:49:39.231Z",
+      "lastPushTimeStamp": "2024-04-17T19:22:05.064Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplify1b9c9621d9af4-staging-cbf00-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiamplifyfullstack"
-      },
-      "lastPushDirHash": "A+XwTyUP/WpAUzWyyD63KNcBT7w="
+      }
     }
   },
   "auth": {
@@ -77,11 +76,53 @@
         "IdentityPoolName": "amplifyfullstacke99633af_identitypool_e99633af__staging",
         "UserPoolName": "amplifyfullstacke99633af_userpool_e99633af"
       },
-      "lastPushTimeStamp": "2024-04-12T03:49:39.233Z",
+      "lastPushTimeStamp": "2024-04-17T19:22:07.206Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplify1b9c9621d9af4-staging-cbf00-deployment/amplify-cfn-templates/auth/amplifyfullstacke99633af-cloudformation-template.json",
         "logicalId": "authamplifyfullstacke99633af"
-      }
+      },
+      "lastPushDirHash": "RDwZSKzC7h3n+YTK9vyDW4O716Y="
+    }
+  },
+  "storage": {
+    "s3amplifyfullstackstorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "lastPushTimeStamp": "2024-04-17T19:22:05.073Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplify1b9c9621d9af4-staging-cbf00-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages3amplifyfullstackstorage"
+      },
+      "output": {
+        "BucketName": "amplify-fullstack-storagecbf00-staging",
+        "Region": "us-west-2"
+      },
+      "lastPushDirHash": "uOJCr6dh0nQDszc9Hgfwub7hjEw="
+    }
+  },
+  "interactions": {
+    "FullStackApplication": {
+      "service": "Lex",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "lastPackageTimeStamp": "2024-04-17T19:20:28.564Z",
+      "distZipFilename": "FullStackApplication-354b612f35774c4c4471-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-amplify1b9c9621d9af4-staging-cbf00-deployment",
+        "s3Key": "amplify-builds/FullStackApplication-354b612f35774c4c4471-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplify1b9c9621d9af4-staging-cbf00-deployment/amplify-cfn-templates/interactions/FullStackApplication-cloudformation-template.json",
+        "logicalId": "interactionsFullStackApplication"
+      },
+      "lastPushTimeStamp": "2024-04-17T19:22:07.206Z",
+      "output": {
+        "FunctionArn": "arn:aws:lambda:us-west-2:618844571952:function:amplifyfullstack_cfnlambda_11aedd76-staging",
+        "Region": "us-west-2",
+        "BotName": "BookTrip_staging"
+      },
+      "lastPushDirHash": "jB9+vJ3AOVpMKF6rJwpOD2sOaGE="
     }
   }
 }

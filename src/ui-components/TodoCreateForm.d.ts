@@ -24,16 +24,34 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type TodoCreateFormInputValues = {
     name?: string;
     description?: string;
+    interest_rate?: number;
+    inflation_rate?: number;
+    current_value?: number;
+    future_value?: number;
+    present_value?: number;
+    currency?: string;
 };
 export declare type TodoCreateFormValidationValues = {
     name?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    interest_rate?: ValidationFunction<number>;
+    inflation_rate?: ValidationFunction<number>;
+    current_value?: ValidationFunction<number>;
+    future_value?: ValidationFunction<number>;
+    present_value?: ValidationFunction<number>;
+    currency?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TodoCreateFormOverridesProps = {
     TodoCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    interest_rate?: PrimitiveOverrideProps<TextFieldProps>;
+    inflation_rate?: PrimitiveOverrideProps<TextFieldProps>;
+    current_value?: PrimitiveOverrideProps<TextFieldProps>;
+    future_value?: PrimitiveOverrideProps<TextFieldProps>;
+    present_value?: PrimitiveOverrideProps<TextFieldProps>;
+    currency?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TodoCreateFormProps = React.PropsWithChildren<{
     overrides?: TodoCreateFormOverridesProps | undefined | null;
@@ -42,6 +60,7 @@ export declare type TodoCreateFormProps = React.PropsWithChildren<{
     onSubmit?: (fields: TodoCreateFormInputValues) => TodoCreateFormInputValues;
     onSuccess?: (fields: TodoCreateFormInputValues) => void;
     onError?: (fields: TodoCreateFormInputValues, errorMessage: string) => void;
+    onCancel?: () => void;
     onChange?: (fields: TodoCreateFormInputValues) => TodoCreateFormInputValues;
     onValidate?: TodoCreateFormValidationValues;
 } & React.CSSProperties>;

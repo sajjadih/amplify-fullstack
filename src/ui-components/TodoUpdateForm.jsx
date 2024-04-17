@@ -27,11 +27,33 @@ export default function TodoUpdateForm(props) {
   const initialValues = {
     name: "",
     description: "",
+    interest_rate: "",
+    inflation_rate: "",
+    current_value: "",
+    future_value: "",
+    present_value: "",
+    currency: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [interest_rate, setInterest_rate] = React.useState(
+    initialValues.interest_rate
+  );
+  const [inflation_rate, setInflation_rate] = React.useState(
+    initialValues.inflation_rate
+  );
+  const [current_value, setCurrent_value] = React.useState(
+    initialValues.current_value
+  );
+  const [future_value, setFuture_value] = React.useState(
+    initialValues.future_value
+  );
+  const [present_value, setPresent_value] = React.useState(
+    initialValues.present_value
+  );
+  const [currency, setCurrency] = React.useState(initialValues.currency);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = todoRecord
@@ -39,6 +61,12 @@ export default function TodoUpdateForm(props) {
       : initialValues;
     setName(cleanValues.name);
     setDescription(cleanValues.description);
+    setInterest_rate(cleanValues.interest_rate);
+    setInflation_rate(cleanValues.inflation_rate);
+    setCurrent_value(cleanValues.current_value);
+    setFuture_value(cleanValues.future_value);
+    setPresent_value(cleanValues.present_value);
+    setCurrency(cleanValues.currency);
     setErrors({});
   };
   const [todoRecord, setTodoRecord] = React.useState(todoModelProp);
@@ -60,6 +88,12 @@ export default function TodoUpdateForm(props) {
   const validations = {
     name: [{ type: "Required" }],
     description: [],
+    interest_rate: [],
+    inflation_rate: [],
+    current_value: [],
+    future_value: [],
+    present_value: [],
+    currency: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -89,6 +123,12 @@ export default function TodoUpdateForm(props) {
         let modelFields = {
           name,
           description: description ?? null,
+          interest_rate: interest_rate ?? null,
+          inflation_rate: inflation_rate ?? null,
+          current_value: current_value ?? null,
+          future_value: future_value ?? null,
+          present_value: present_value ?? null,
+          currency: currency ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -151,6 +191,12 @@ export default function TodoUpdateForm(props) {
             const modelFields = {
               name: value,
               description,
+              interest_rate,
+              inflation_rate,
+              current_value,
+              future_value,
+              present_value,
+              currency,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -176,6 +222,12 @@ export default function TodoUpdateForm(props) {
             const modelFields = {
               name,
               description: value,
+              interest_rate,
+              inflation_rate,
+              current_value,
+              future_value,
+              present_value,
+              currency,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -189,6 +241,212 @@ export default function TodoUpdateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="Interest rate"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={interest_rate}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              interest_rate: value,
+              inflation_rate,
+              current_value,
+              future_value,
+              present_value,
+              currency,
+            };
+            const result = onChange(modelFields);
+            value = result?.interest_rate ?? value;
+          }
+          if (errors.interest_rate?.hasError) {
+            runValidationTasks("interest_rate", value);
+          }
+          setInterest_rate(value);
+        }}
+        onBlur={() => runValidationTasks("interest_rate", interest_rate)}
+        errorMessage={errors.interest_rate?.errorMessage}
+        hasError={errors.interest_rate?.hasError}
+        {...getOverrideProps(overrides, "interest_rate")}
+      ></TextField>
+      <TextField
+        label="Inflation rate"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={inflation_rate}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              interest_rate,
+              inflation_rate: value,
+              current_value,
+              future_value,
+              present_value,
+              currency,
+            };
+            const result = onChange(modelFields);
+            value = result?.inflation_rate ?? value;
+          }
+          if (errors.inflation_rate?.hasError) {
+            runValidationTasks("inflation_rate", value);
+          }
+          setInflation_rate(value);
+        }}
+        onBlur={() => runValidationTasks("inflation_rate", inflation_rate)}
+        errorMessage={errors.inflation_rate?.errorMessage}
+        hasError={errors.inflation_rate?.hasError}
+        {...getOverrideProps(overrides, "inflation_rate")}
+      ></TextField>
+      <TextField
+        label="Current value"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={current_value}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              interest_rate,
+              inflation_rate,
+              current_value: value,
+              future_value,
+              present_value,
+              currency,
+            };
+            const result = onChange(modelFields);
+            value = result?.current_value ?? value;
+          }
+          if (errors.current_value?.hasError) {
+            runValidationTasks("current_value", value);
+          }
+          setCurrent_value(value);
+        }}
+        onBlur={() => runValidationTasks("current_value", current_value)}
+        errorMessage={errors.current_value?.errorMessage}
+        hasError={errors.current_value?.hasError}
+        {...getOverrideProps(overrides, "current_value")}
+      ></TextField>
+      <TextField
+        label="Future value"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={future_value}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              interest_rate,
+              inflation_rate,
+              current_value,
+              future_value: value,
+              present_value,
+              currency,
+            };
+            const result = onChange(modelFields);
+            value = result?.future_value ?? value;
+          }
+          if (errors.future_value?.hasError) {
+            runValidationTasks("future_value", value);
+          }
+          setFuture_value(value);
+        }}
+        onBlur={() => runValidationTasks("future_value", future_value)}
+        errorMessage={errors.future_value?.errorMessage}
+        hasError={errors.future_value?.hasError}
+        {...getOverrideProps(overrides, "future_value")}
+      ></TextField>
+      <TextField
+        label="Present value"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={present_value}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              interest_rate,
+              inflation_rate,
+              current_value,
+              future_value,
+              present_value: value,
+              currency,
+            };
+            const result = onChange(modelFields);
+            value = result?.present_value ?? value;
+          }
+          if (errors.present_value?.hasError) {
+            runValidationTasks("present_value", value);
+          }
+          setPresent_value(value);
+        }}
+        onBlur={() => runValidationTasks("present_value", present_value)}
+        errorMessage={errors.present_value?.errorMessage}
+        hasError={errors.present_value?.hasError}
+        {...getOverrideProps(overrides, "present_value")}
+      ></TextField>
+      <TextField
+        label="Currency"
+        isRequired={false}
+        isReadOnly={false}
+        value={currency}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              interest_rate,
+              inflation_rate,
+              current_value,
+              future_value,
+              present_value,
+              currency: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.currency ?? value;
+          }
+          if (errors.currency?.hasError) {
+            runValidationTasks("currency", value);
+          }
+          setCurrency(value);
+        }}
+        onBlur={() => runValidationTasks("currency", currency)}
+        errorMessage={errors.currency?.errorMessage}
+        hasError={errors.currency?.hasError}
+        {...getOverrideProps(overrides, "currency")}
       ></TextField>
       <Flex
         justifyContent="space-between"

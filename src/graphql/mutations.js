@@ -10,6 +10,11 @@ export const createTodo = /* GraphQL */ `
       id
       name
       description
+      interest_rate
+      inflation_rate
+      current_value
+      future_value
+      present_value
       createdAt
       updatedAt
       __typename
@@ -25,6 +30,11 @@ export const updateTodo = /* GraphQL */ `
       id
       name
       description
+      interest_rate
+      inflation_rate
+      current_value
+      future_value
+      present_value
       createdAt
       updatedAt
       __typename
@@ -40,6 +50,11 @@ export const deleteTodo = /* GraphQL */ `
       id
       name
       description
+      interest_rate
+      inflation_rate
+      current_value
+      future_value
+      present_value
       createdAt
       updatedAt
       __typename

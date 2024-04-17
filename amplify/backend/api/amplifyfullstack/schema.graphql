@@ -2,5 +2,11 @@ type Todo @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
   description: String
+  interest_rate: Float
+  inflation_rate: Float
+  current_value: Float
+  future_value: Float
+  present_value: Float
+  currency: String
 }
  

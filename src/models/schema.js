@@ -24,6 +24,48 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "interest_rate": {
+                    "name": "interest_rate",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "inflation_rate": {
+                    "name": "inflation_rate",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "current_value": {
+                    "name": "current_value",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "future_value": {
+                    "name": "future_value",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "present_value": {
+                    "name": "present_value",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "currency": {
+                    "name": "currency",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -70,5 +112,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "4401034582a70c60713e1f7f9da3b752"
+    "version": "557044a12603b7b69632aec91ddafb2d"
 };

@@ -14,6 +14,12 @@ type EagerTodo = {
   readonly id: string;
   readonly name: string;
   readonly description?: string | null;
+  readonly interest_rate?: number | null;
+  readonly inflation_rate?: number | null;
+  readonly current_value?: number | null;
+  readonly future_value?: number | null;
+  readonly present_value?: number | null;
+  readonly currency?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -26,6 +32,12 @@ type LazyTodo = {
   readonly id: string;
   readonly name: string;
   readonly description?: string | null;
+  readonly interest_rate?: number | null;
+  readonly inflation_rate?: number | null;
+  readonly current_value?: number | null;
+  readonly future_value?: number | null;
+  readonly present_value?: number | null;
+  readonly currency?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
